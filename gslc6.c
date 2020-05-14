@@ -1,7 +1,12 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<malloc.h> 
-#define COUNT 10
+
+/*
+ * Tugas GSLC 6 - Datstruk
+ * Binary char tree
+ * Matthew Christopher Albert - 2301848981 - LD01
+ */
 
 struct tnode{
 	char *value;
@@ -15,7 +20,6 @@ struct tnode_info{
 
 int compareStrings(char *s1, char *s2) {
     int i;
-
     for (i = 0; s1[i] == s2[i]; i++) {
         if (s1[i] == '\0')
             return 0; // s1 == s2
@@ -103,8 +107,8 @@ struct tnode* find_minimum(struct tnode *root)
 {
     if(root == NULL)
         return NULL;
-    else if(root->left != NULL) // node with minimum value will have no left child
-        return find_minimum(root->left); // left most element will be minimum
+    else if(root->left != NULL)
+        return find_minimum(root->left);
     return root;
 }
 
@@ -113,10 +117,12 @@ struct tnode* delete_node(struct tnode *root, char x[])
     //searching for the item to be deleted
     if(root==NULL){return NULL;}
 	int cres = compareStrings(root->value, x);
-    if (cres == 1)
-        root->right = delete_node(root->right, x);
-    else if(cres == -1)
+    if (cres == 1){
         root->left = delete_node(root->left, x);
+	}
+    else if(cres == -1){
+        root->right = delete_node(root->right, x);
+	}
     else
     {
         //No Children
@@ -129,7 +135,6 @@ struct tnode* delete_node(struct tnode *root, char x[])
         //One Child
         else if(root->left==NULL || root->right==NULL)
         {
-            struct node *temp;
             if(root->left==NULL)
                 temp = root->right;
             else
@@ -150,8 +155,9 @@ struct tnode* delete_node(struct tnode *root, char x[])
 }
 
 //delete wrapper
-void delete(struct tnode **head, char x[]){
-	*head = delete_node(*head, "d");
+void delete_n(struct tnode **head, char x[]){
+	*head = delete_node(*head, x);
+    printf("deleted %s\n",x); 
 }
 
 
@@ -159,12 +165,12 @@ void delete(struct tnode **head, char x[]){
 void print2DUtil(struct tnode *root, int space){ 
     if (root == NULL) 
         return; 
-    space += COUNT; 
+    space += 10; 
     print2DUtil(root->right, space); 
   
     // Print current node after space 
     printf("\n"); 
-    for (int i = COUNT; i < space; i++) 
+    for (int i = 10; i < space; i++)
         printf(" "); 
     printf("%s\n", root->value); 
   
@@ -179,12 +185,24 @@ void print2D(struct tnode *root) {
 
 int main(){
 	struct tnode *head = NULL;
-	append(&head, "d");
-	append(&head, "f");
-	append(&head, "a");
-	// append(&head, "e");
-	// append(&head, "c");
-	// append(&head, "g");
-	delete(&head, "d");
+	append(&head, "aa");
+	print2D(head); 
+	append(&head, "z");
+	print2D(head); 
+	append(&head, "za");
+	print2D(head); 
+	append(&head, "b");
+	print2D(head); 
+	append(&head, "c");
+	print2D(head); 
+	append(&head, "ca");
+	print2D(head); 
+	append(&head, "ba");
+	print2D(head); 
+	delete_n(&head,"z");
+	print2D(head); 
+	delete_n(&head,"b");
+	print2D(head); 
+	delete_n(&head,"ca");
 	print2D(head); 
 }
